@@ -46,15 +46,15 @@ class _HomePageState extends State<HomePage> {
 
     String futureString = '';
 
-    try {
+    // try {
 
-      futureString = await new QRCodeReader().scan();
+    //   futureString = await new QRCodeReader().scan();
 
-    } catch (e) {
+    // } catch (e) {
 
-      futureString = e.toString();
+    //   futureString = e.toString();
 
-    }
+    // }
 
   }
 
