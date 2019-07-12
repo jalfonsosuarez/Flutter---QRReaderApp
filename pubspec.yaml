@@ -18,6 +18,8 @@ environment:
 
 dependencies:
   qrcode_reader: ^0.4.4
+  sqflite: ^1.1.6
+  path_provider: ^1.1.2
   flutter:
     sdk: flutter
 
