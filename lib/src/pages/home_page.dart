@@ -3,6 +3,7 @@ import 'package:qrcode_reader/qrcode_reader.dart';
 
 import 'package:qrreaderapp/src/pages/direcciones_page.dart';
 import 'package:qrreaderapp/src/pages/mapas_page.dart';
+import 'package:qrreaderapp/src/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -44,7 +45,8 @@ class _HomePageState extends State<HomePage> {
     // https://fernando-herrera.com
     // geo: 37.402549896017995, -5.957479177321261
 
-    String futureString = '';
+    // String futureString = '';
+    String futureString = 'https://fernando-herrera.com';
 
     // try {
 
@@ -55,6 +57,11 @@ class _HomePageState extends State<HomePage> {
     //   futureString = e.toString();
 
     // }
+
+    if (futureString != null ) {
+        final scan = ScanModel( valor: futureString );
+        DBProvider.db.nuevoScan( scan );
+    }
 
   }
 

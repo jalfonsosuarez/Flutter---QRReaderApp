@@ -3,9 +3,11 @@
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:qrreaderapp/src/models/scan_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'package:qrreaderapp/src/models/scan_model.dart';
+export 'package:qrreaderapp/src/models/scan_model.dart';
 
 class DBProvider {
 
