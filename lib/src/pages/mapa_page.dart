@@ -4,7 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:qrreaderapp/src/models/scan_model.dart';
 
-class MapaPage extends StatelessWidget {
+class MapaPage extends StatefulWidget {
+
+  @override
+  _MapaPageState createState() => _MapaPageState();
+}
+
+class _MapaPageState extends State<MapaPage> {
+  final map = new MapController();
+
+  String tipoMapa = 'streets';
+
   @override
   Widget build(BuildContext context) {
 
@@ -16,23 +26,28 @@ class MapaPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon( Icons.my_location ),
-            onPressed: (){},
+            onPressed: (){
+              map.move( scan.getLatLng(), 15 );
+            },
           )
         ],
       ),
-      body:_crearFlutterMap( scan )
+      body:_crearFlutterMap( scan ),
+      floatingActionButton: _crearBotonFlotante( context ),
     );
   }
 
   Widget _crearFlutterMap( ScanModel scan ) {
 
     return FlutterMap(
+      mapController: map,
       options: MapOptions(
         center: scan.getLatLng(),
-        zoom: 10
+        zoom: 15
       ),
       layers: [
-        _crearMapa();
+        _crearMapa(),
+        _crearMarcadores( scan )
       ] ,
     );
 
@@ -44,11 +59,58 @@ class MapaPage extends StatelessWidget {
       urlTemplate: 'https://api.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
       additionalOptions: {
         'accessToken': 'pk.eyJ1IjoiamFsZm9uc29zdWFyZXoiLCJhIjoiY2p5MDJxOHc0MDhyczNoczk4d3N5ZWZidyJ9.oXlbc-coYpBgjXeizijZ2w',
-        'id' : 'mapbox.streets'
+        'id' : 'mapbox.$tipoMapa', //streets, dark, light, outdoors, satellite
       }
     );
 
   }
 
+  _crearMarcadores( ScanModel scan ) {
 
+    return MarkerLayerOptions(
+      markers: <Marker> [
+        Marker (
+          width: 100.0,
+          height: 100.0,
+          point: scan.getLatLng(),
+          builder: ( context ) => Container(
+            child: Icon( 
+              Icons.location_on,
+              size: 60.0,
+              color: Theme.of( context ).primaryColor,
+              ),
+          )
+        )
+      ]
+    );
+
+  }
+
+  Widget _crearBotonFlotante( BuildContext context ) {
+
+    return FloatingActionButton(
+
+      child: Icon( Icons.repeat ),
+      backgroundColor: Theme.of(context).primaryColor,
+      onPressed: (){
+
+        if ( tipoMapa == 'streets' ) {
+          tipoMapa = "dark";
+        } else if( tipoMapa == 'dark' ) {
+          tipoMapa = 'light';
+        } else if( tipoMapa == 'light' ) { 
+          tipoMapa = 'outdoors';
+        }else if( tipoMapa == 'outdoors' ) { 
+          tipoMapa = 'satellite';
+        } else { 
+          tipoMapa = 'streets';
+        }
+
+        setState((){});
+
+      },
+
+    );
+
+  }
 }
